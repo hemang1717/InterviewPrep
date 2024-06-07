@@ -1,0 +1,21 @@
+HashMap is an array of linked list in java, where each index stores a linked list.
+The initial capacity of map is declared as 16 and load factor is 0.75
+HashMap offers O(1) insertion and retrieval time.HashMap offers O(1) insertion and retrieval time.
+
+HashMap uses its static inner class Node<K,V> for storing map entries. That means each entry in hashMap is a Node. Internally HashMap uses a hashCode of the key Object and this hashCode is further used by the hash function to find the index of the bucket where the new entry can be added.
+HashMap uses multiple buckets and each bucket points to a Singly Linked List where the entries (nodes) are stored.
+Once the bucket is identified by the hash function using hashcode, then hashCode is used to check if there is already a key with the same hashCode or not in the bucket(I mean corresponding singly linked list).
+If there already exists a key with the same hashCode, then the equals() method is used on the keys. If the equals method returns true, that means there is already a node with the same key and hence the value against that key is overwritten in the entry(node), otherwise, a new node is created and added to this Singly Linked List of that bucket.
+If there is no key with the same hashCode in the bucket found by the hash function then the new Node is added to the bucket found.
+
+1. Contract between equals and hashcode
+Ans: If two objects are same there hashcode should be same, but if two hascodes are same does not imply both are of same objects.
+
+2. What if all the indexes in the hashtable gets filled and multiple collision occurs?
+Ans: Loadfactor comes into rescue. If lets say there are initially place for 16 indexes in a table and load factor is 0.75 then whenever 16*0.75=12 indexes gets filled the hashmap will resize itself to the double size and it will rehash all the entries present in the hashmap. 
+
+3. Lets say you have a sufficient hashmap size but all the entries get filled inside the linked list present at a single index. What should we do then?
+Ans: Treefy threshold came into rescue this time, default value of it is 8. It means when the size of a linked list present at an index becomes greater than equal to treefy threshold then the linked list will get converted into a balanced binary search tree (red black tree) , and the time complexity of inserting , searching and putting in this tree is O(log(n))
+
+4. Why the load factor is 0.75?
+Ans: A load factor of 0.75 provides a good balance between time and space efficiency. It means that when the HashMap is 75% full, it will resize (typically double its size). This value is chosen to avoid too many collisions, which would degrade performance, while also not wasting too much memory. If the load factor is too low (e.g., 0.5), the HashMap would resize more frequently, leading to excessive memory usage and overhead from frequent resizing operations. If the load factor is too high (e.g., 1.0), the HashMap would have fewer resizes but would suffer from increased collisions and longer search times, degrading performance. By maintaining a load factor of 0.75, HashMap implementations aim to keep the number of entries per bucket manageable, ensuring that the operations of insertion, deletion, and retrieval remain efficient.
